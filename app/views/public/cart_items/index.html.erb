@@ -1,0 +1,47 @@
+<div class="col-md-8 offset-md-1">
+
+<table>
+  <tr><%= button_to "全て削除", public_destroy_all_item_path, method: :delete %></tr>
+    <tr>
+     <th></th>
+      <th>商品名</th>
+      <th>単価（税込）</th>
+      <th>数量</th>
+      <th>小計</th>
+      <th></th>
+    </tr>
+     <% @cart_item.each do |cart_item| %>
+     <tr>
+     
+      <td>  <% if cart_item.item.image.attached? %>
+    <%= image_tag cart_item.item.image, size: "100x100" %>
+    <% else %>
+      <%= image_tag 'no_image', size: "2x2" %>
+    <% end %></td>
+      <td><%= cart_item.item.name %></td>
+      <td>￥<%= cart_item.item.price %>（税込）</td>
+      <td> 
+        <%= form_with model: cart_item, url: public_update_item_path(cart_item.id), method: :patch do |f| %>
+        <%= f.select :amount, *[1..10] %>
+        <%= f.submit "変更" %>
+          <% end %>   </td>
+      <td><%= cart_item.item.price*cart_item.amount %> </td>
+
+            
+       <td><%= link_to "削除する", public_destroy_item_path(cart_item),  method: :delete, "data-confirm" => "本当に削除しますか？" %>
+     <% @total=@total+cart_item.item.price*cart_item.amount %>
+ </tr>
+ <% end %>
+
+    </td>
+  </table>
+
+<table style="margin-top: 50px;">
+    <tr>
+      <th>合計金額</th>
+      <td><%= @total %></td>
+ </tr>
+  </table>
+</div>
+<%= link_to "注文手続きへ", public_orders_new_path, class: "btn btn-primary mt-3" %>
+<%= link_to "買い物を続ける", public_items_path, class: "btn btn-primary mt-5" %>

@@ -1,0 +1,23 @@
+<%= form_with model: @post do |f| %>
+  <p>
+    <%= f.label :title, '題目' %>
+    <%= f.text_field :title %>
+  </p>
+
+  <p>
+    <%= f.label :body, '本文'%>
+    <%= f.text_field :body %>
+  </p>
+
+  <p>
+    <%= f.label :genre, 'カテゴリ' %>
+    <%= f.collection_check_boxes(:genre_ids, Genre.all, :id, :name) do |genre| %> 
+      <%= genre.label do %>
+        <%= genre.check_box %>
+        <%= genre.text %>
+      <% end %>
+    <% end %>
+  </p>
+
+  <%= f.submit '投稿する' %>
+<% end %>

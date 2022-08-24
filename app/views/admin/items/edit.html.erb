@@ -1,0 +1,24 @@
+<h1>編集画面</h1>
+
+<%= form_with model: @item, url: admin_update_item_path(@item.id), method: :patch do |f| %>
+
+  <h4>タイトル</h4>
+    <p><%= f.file_field :image, accept: "image/*", class: "w-100" %></p>
+    <p>商品名<%= f.text_field :name %></p>
+    <p> 商品説明<%= f.text_area :introduction %></p>
+  <p> <%= f.label :genre_id, 'ジャンル' %>
+  <%= f.collection_select :genre_id, Genre.all, :id, :name, { prompt: '選択してください' }, class: 'form-control' %></p>
+    <p>税抜価格<%= f.text_field :price %></p>
+      <p><%= f.label :is_active_sale, '販売中' %>
+      <%= f.radio_button :is_active, true %>
+      <%= f.label :is_active_sold_out, '販売停止中' %>
+      <%= f.radio_button :is_active, false %></p>
+  <%= f.submit '保存' %>
+  
+
+
+
+
+  
+<% end %>
+

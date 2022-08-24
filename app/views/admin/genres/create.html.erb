@@ -1,0 +1,9 @@
+  <%= form_with model: Genre do |f| %>
+ <h2 class="mt-3">New genre</h2>
+    <div class="form-group">
+          <label for="genre_title">Title</label><br>
+          <%= f.text_field :name %>
+    </div>
+
+     <%= f.submit 'Create Genre' ,class: "btn btn-success"%>
+    <% end %>

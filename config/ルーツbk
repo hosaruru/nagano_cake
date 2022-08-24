@@ -1,0 +1,91 @@
+Rails.application.routes.draw do
+  namespace :public do
+    get 'cart_items' => 'cart_items#index'
+    post 'cart_items' => 'cart_items#create'
+    get 'cart_items/:id/edit' => 'cart_items#edit', as: 'edit_item'
+    get 'cart_items/:id' => 'cart_items#show'
+    resources :cart_items, only: [:new, :update]
+  end
+  namespace :admin do
+    resources :orders, only: [:show, :update]    
+    get 'orders/show'
+  end
+  namespace :admin do
+    get 'order_details/update'
+  end
+  namespace :public do
+    patch 'addresses/:id' => 'addresses#update', as: 'update_address'
+    delete 'addresses/:id' => 'addresses#destroy', as: 'destroy_address'
+    get 'addresses' =>  'addresses#index'
+    post 'addresses' => 'addresses#create'
+    get 'addresses/update'
+    get 'addresses/:id/edit' => 'addresses#edit', as: 'edit_address'
+  end
+# 顧客用
+# URL /customers/sign_in ...
+devise_for :customers,skip: [:passwords], controllers: {
+  registrations: "public/registrations",
+  sessions: 'public/sessions'
+}
+
+# 管理者用
+# URL /admin/sign_in ...
+devise_for :admin, skip: [:registrations, :passwords] ,controllers: {
+  sessions: "admin/sessions"
+}
+  namespace :public do
+    patch 'customers/withdraw'
+    patch 'customers/:id' => 'customers#update', as: 'update_customer'
+    resources :customers, only: [:show, :edit, :update, :new, :unsubscribe] 
+    get 'customers/show'
+    get 'customers/edit'
+    get 'customers/update'
+    get 'customers/new'
+    get 'customers/unsubscribe'
+
+  end
+  root to: 'public/homes#top'
+  namespace :public do
+    get 'items' => 'items#index'
+    get 'items/:id' => 'items#show'
+    post 'items' => 'items#show'
+  end
+  namespace :public do
+    get 'homes/top'
+    get 'homes/about'
+  end
+  namespace :admin do
+    patch 'customers/:id' => 'customers#update', as: 'update_customer'
+    get 'customers' => 'customers#index'
+    get 'customers/:id' => 'customers#show'
+    get 'customers/:id/edit' => 'customers#edit', as: 'customer'
+  end
+  namespace :admin do
+    patch 'items/:id' => 'items#update', as: 'update_item'
+    get 'items' => 'items#index'
+    get 'items/new'
+    get 'items/create'
+    post 'items' => 'items#create'
+    get 'items/:id' => 'items#show'
+    get 'items/:id/edit' => 'items#edit', as: 'edit_item'
+    get 'items/update'
+  end
+  namespace :admin do
+    patch 'genres/:id' => 'genres#update', as: 'update_genre'
+    get "genres" =>  'genres#index'
+    resources :genres, only: [:new, :create, :show]
+    post 'genres' => 'genres#create'
+    get 'genres/:id/edit' => 'genres#edit', as: 'edit_genre'
+    get 'genres/:id' => 'genres#show'
+  end
+  
+  namespace :public do
+    patch 'genres/:id' => 'genres#update', as: 'update_genre'
+    resources :genres, only: [:index, :new, :create, :update]
+    post 'genres' => 'genres#create'
+    get 'genres/:id/edit' => 'genres#edit', as: 'edit_genre'
+    get 'genres/:id' => 'genres#show'
+  end
+
+
+end
